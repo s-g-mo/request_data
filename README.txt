@@ -1,4 +1,4 @@
-A simple scripts to download seismic data as .SAC files.
+A simple script to download seismic data as .SAC files.
 
 Stephen Mosher (2020)
 
