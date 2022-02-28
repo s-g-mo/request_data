@@ -68,6 +68,22 @@ def data(clnt,tstart,tend,dlen,ntwrk,chns,stns,N,sD,fname_fmt,data_dir):
         # Imprint stn lat, lon, elv, and comp orientations into each tr.
         for tr in st:
           imprint_stats(tr, inv[0])
+          
+        # Optional pre-processing. Values hardcoded for now. Generalize later.
+        if preproc:
+          for tr in st:
+            if (tr.stats.channel == np.array(chns.split(',')[0:3])).any():
+              tr.detrend('demean')
+              tr.detrend('linear')
+              tr.filter('lowpass', freq=0.5 * 5.0, corners=2, zerophase=True)
+              tr.resample(1.0)
+              tr.remove_response(pre_filt=[0.001, 0.005, 45., 50.], output='DISP')
+            elif tr.stats.channel == chns.split(',')[3]:
+              tr.detrend('demean')
+              tr.detrend('linear')
+              tr.filter('lowpass', freq=0.5 * 5.0, corners=2, zerophase=True)
+              tr.resample(1.0)
+              tr.remove_response(pre_filt=[0.001, 0.005, 45., 50.])
 
         # Write to disk.
         for tr in st:
