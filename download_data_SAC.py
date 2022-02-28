@@ -30,6 +30,7 @@ dlen = 60. * 60. * 24             # length of data segments [seconds]
 N = 4                             # number of channels being requested
 strict_dlen = True                # if length of segment < dLen, throw out
 fname_fmt = 'default'             # file name format (default is %Y.%j.%H.%M)
+preproc = False
 
 # Specify directory to save .SAC files.
 out_dir = '/Users/stephenmosher/Seismo/test/' + code + '/'
