@@ -30,7 +30,7 @@ eT = UTCDateTime(2010, 11, 19, 00)# request interval end time
 dlen = 60. * 60. * 24             # length of data segments [seconds]
 strict_dlen = True                # if length of segment < dLen, throw out
 fname_fmt = 'default'             # file name format (default is %Y.%j.%H.%M)
-preproc = True
+preproc = True                    # optional preprocessing on downloaded data
 
 # Specify directory to save .SAC files.
 out_dir = '/Users/stephenmosher/Seismo/raw_data/' + code + '_LH/'
