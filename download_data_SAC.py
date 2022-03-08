@@ -11,7 +11,7 @@ Important Notes:
   
   3) Quality control in request.data() throws out zero/constant-valued traces.
 
-Stephen Mosher (2020)
+Stephen Mosher (2020) - updated 2022
 '''
 # Import modules and functions
 import request, setup
@@ -20,19 +20,20 @@ from obspy import UTCDateTime
 ############################## Request parameters ##############################
 
 clnt = 'IRIS'                     # client
-name = 'YH'                       # network name
-code = 'YH'                       # network code
-chns = 'HH1,HH2,HHZ,EDH'          # channel(s)
-stns = 'LOBS1,LOBS2,LOBS3,LOBS4'  # station(s)
-sT = UTCDateTime(2014, 8, 1, 00)  # request interval start time
-eT = UTCDateTime(2014, 11, 1, 00) # request interval end time
-dlen = 60. * 60. * 24             # length of data segments [seconds]
+name = 'YL'                       # network name
+code = 'YL'                       # network code
+chns = 'LH1,LH2,LHZ,LDH'          # channel(s)
 N = 4                             # number of channels being requested
+stns = 'A02W'                     # station(s)
+sT = UTCDateTime(2009, 11, 21, 00)# request interval start time
+eT = UTCDateTime(2010, 11, 19, 00)# request interval end time
+dlen = 60. * 60. * 24             # length of data segments [seconds]
 strict_dlen = True                # if length of segment < dLen, throw out
 fname_fmt = 'default'             # file name format (default is %Y.%j.%H.%M)
+preproc = True
 
 # Specify directory to save .SAC files.
-out_dir = '/Users/stephenmosher/Seismo/test/' + code + '/'
+out_dir = '/Users/stephenmosher/Seismo/raw_data/' + code + '_LH/'
 
 ##################################### Main #####################################
                            

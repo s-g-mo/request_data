@@ -13,7 +13,7 @@ from obspy import Stream, UTCDateTime
 from obspy.clients.fdsn import Client
 from obspy.io.sac.util import obspy_to_sac_header
 
-def data(clnt,tstart,tend,dlen,ntwrk,chns,stns,N,sD,fname_fmt,data_dir):
+def data(clnt,tstart,tend,dlen,ntwrk,chns,stns,N,sD,fname_fmt,data_dir,preproc):
   
   # Check dlen doesn't exceed length of request interval.
   if dlen > (tend - tstart):
@@ -69,6 +69,10 @@ def data(clnt,tstart,tend,dlen,ntwrk,chns,stns,N,sD,fname_fmt,data_dir):
         for tr in st:
           imprint_stats(tr, inv[0])
 
+        # Optional pre-processing. Values hardcoded for now. Generalize later.
+        if preproc:
+          preprocessing(st)
+
         # Write to disk.
         for tr in st:
           save.SAC_data(tr, fname_fmt, data_dir)
@@ -83,6 +87,24 @@ def data(clnt,tstart,tend,dlen,ntwrk,chns,stns,N,sD,fname_fmt,data_dir):
         # Shift to the next data segment.
         t1, t2 = advance_segment(t1, t2, dlen)
         continue
+
+def preprocessing(st):
+  for tr in st:
+    channel_codes = [char for char in tr.stats.channel]
+    # Pre-processing for seismic components.
+    if channel_codes[1] == 'H':
+      tr.detrend('demean')
+      tr.detrend('linear')
+      #tr.filter('lowpass', freq=0.5 * 5.0, corners=2, zerophase=True)
+      #tr.resample(1.0)
+      tr.remove_response(pre_filt=[0.001, 0.005, 45., 50.], output='DISP')
+    # Pre-processing for pressure component.
+    elif channel_codes[1] == 'D':
+      tr.detrend('demean')
+      tr.detrend('linear')
+      #tr.filter('lowpass', freq=0.5 * 5.0, corners=2, zerophase=True)
+      #tr.resample(1.0)
+      tr.remove_response(pre_filt=[0.001, 0.005, 5., 10.])
 
 def quality_control(st, strict_dlen, dlen):
 
