@@ -10,7 +10,6 @@ Short description:
 Dependencies:
   - python 3.5
   - obspy
-  - pickle
   - numpy
 
 Instructions:
